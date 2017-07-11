@@ -1,0 +1,41 @@
+.TH DBFS 1 "JUN 2017" Linux "User Manuals"                                  
+.SH NAME                                                                     
+dbfs \- Cache in RAM the content of DB tables and mount the cache like a file system. 
+.SH SYNOPSIS                                                                 
+.B  dbfs [-m mountpoint] [-d db_name] [-u user] [-a address] [-p port] [-o owner] [-f filepath] [-P password] [-D] | [-h]
+.SH DESCRIPTION                                                              
+.B dbfs                                                                       
+This program permits to mount tables of a relational db like a file system, in read only, caching the data in RAM. So it's possible to access that db using a shell (i.e. the ls command to list the tables, cat to list the data int the tables and so on) to a cache in RAM of that tables. It's possible to reload at run time one or more of that tables sending a USR2 signat to the dbfs' process.
+At the moment Postgres is supported.
+.SH OPTIONS                                                       
+.IP -m
+This parameter specifies the mount point of dbfs.
+.IP -d
+This parameter specifies the name of the db that will be mounted as file system.
+.IP -u
+This parameter specifies the user name used as credential for the login to the db.
+.IP -a
+This parameter specifies the ip address of the db listener.
+.IP -p
+This optional parameter specifies the tcp port of the db listener. If not specified, the defalut port will be used.
+.IP -o
+This optional parameter specifies the user name of the tables' owner in the db we are going to load in memory. 
+.IP -f
+This optional parameter specifies a configuration file with a list of tables used to refresh the in-memory database. It contains a list of table that will be used to refresh the cache of the tables already in memory or to load new tables. The format is: one table for line, '\n' as line separator.  A default file will be used if this option wasn't secifies (see FILES). This file must be present in case of refresh activated by signal (USR2): only the tables in the configuration files will be reloaded.
+.IP -P
+This optional parameter specifies password used for the login in the db, if a password is necessary.
+.IP -D
+Debug mode. Verbose log entry will be added in system logs using Syslog's interface.
+.IP -h
+A short description of dbfs command line syntax.
+.SH FILES                                                                    
+.IP ./dbfs.config
+The default configuratio file, if -f wasn't sepcified.
+.SH BUGS                                                                     
+This program is an alpha version. Please report any bugs.
+.SH DEPENDENCIES
+libfuse (FUSE), libpq (PostgreSQL). Syslog-ng.
+.SH AUTHOR                                                                   
+Gabriele Bonacini <gabriele.bonacini@protonmail.com>
+.SH "SEE ALSO"                                                               
+.BR FUSERMOUNT(1)
