@@ -255,7 +255,7 @@ namespace dbfs{
     
       static_cast<void>(fi);
 
-      Dbfs::syslog->log(LOG_DEBUG, {"- readCb: Full Path: ", path});
+      Dbfs::syslog->log(LOG_DEBUG, {"- readCb: Full Path: ", path, " Size requested:", to_string(size), " Offset: ", to_string(offset)});
 
       exception_ptr exPtr; 
 
@@ -282,27 +282,33 @@ namespace dbfs{
               Dbfs::syslog->log(LOG_DEBUG, {"- readCb: Size: ", to_string(len)});
     
               if(offset < 0){
+                  Dbfs::syslog->log(LOG_ERR, "- readCb: Offset negative.");
                   ret  =  -ENOENT;
                   goto END;
               }
     
               if(len > INT_MAX){
+                  Dbfs::syslog->log(LOG_ERR, "- readCb: INT_MAX exceeded.");
                   ret  =  -ENOENT;
                   goto END;
               }
         
-              if (static_cast<size_t>(offset) >= len)
+              if (static_cast<size_t>(offset) >= len){
+                  Dbfs::syslog->log(LOG_ERR, "- readCb: end of file exceeded.");
                   goto END;
+              } 
 
               const TableData& tdata = get<DATA>(file->second);  
 
               if (offset + size > len) {
+                      Dbfs::syslog->log(LOG_DEBUG, {"- readCb: reading all the available bytes from: ", to_string(offset), " to: ",  to_string(offset+len)});
 		      copy(tdata.data() + offset, tdata.data() + len, buf);
                       ret =   len - offset;
                       goto END;
               }
             
-              copy(tdata.data() + offset, tdata.data() + len, buf);
+              Dbfs::syslog->log(LOG_DEBUG, {"- readCb: reading from: ", to_string(offset), " to: ",  to_string(offset+len)});
+              copy(tdata.data() + offset, tdata.data() + offset + size, buf);
 
               ret =   size;
           }

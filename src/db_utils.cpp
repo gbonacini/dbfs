@@ -127,6 +127,7 @@ void PsqlConnection::loadTable(TableName tableName, TableAttr& tableAttr) noexce
                         char*  rowdata = PQgetvalue(result, r, f);
                         tdata.insert(tdata.end(), rowdata, rowdata + strlen(rowdata));
                         tdata.push_back(';');
+                        syslog->log(LOG_DEBUG, {"- loadTable : Loading Table: ", rowdata});
                     }
                     tdata.push_back('\n');
                 }
