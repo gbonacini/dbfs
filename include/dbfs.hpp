@@ -47,7 +47,6 @@
 #include <limits>
 #include <memory>
 #include <algorithm>
-#include <thread> 
 #include <atomic> 
 #include <mutex>
 #include <condition_variable>
@@ -131,7 +130,6 @@ namespace dbfs{
                                                       dbPwd;
                            std::unique_ptr<dbfsutils::DbConnection>
                                                       dbconn;
-                           std::thread                *thRefresh; 
                   static   Dbfs*                      singleDbfs;
                   static   Filesystem                 fsdb;
                   static   std::atomic<bool>          refreshing; 

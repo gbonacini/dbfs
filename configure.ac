@@ -55,13 +55,13 @@ AS_CASE(["$host_os"],
         [     OPTIMIZATION="-O2 "
               AS_CASE(["$CC"],
 	            [gcc], 
-                     [ CXXFLAGS=" -ggdb -std=c++11 -pthread -Wall -Wextra \
+                     [ CXXFLAGS=" -ggdb -std=c++11 -Wall -Wextra \
                              -D_FORTIFY_SOURCE=2 ${OPTIMIZATION} -fstack-protector \
                              --param=ssp-buffer-size=4 -Wformat -Werror=format-security "
                         LDFLAGS="$LDFLAGS ${LIB_SSL_CUSTOM}-Wl,-z,relro"
 		    ],
 		    [
-                         CXXFLAGS=" -std=c++11 -pthread -O2 -g -Wall "
+                         CXXFLAGS=" -std=c++11 -O2 -g -Wall "
                          LDFLAGS="$LDFLAGS "
 		    ])
         ],

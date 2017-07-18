@@ -345,7 +345,7 @@ namespace dbfs{
 
     Dbfs::Dbfs(const string& dir, Syslog* slog, const string& confFile, const string& tableOwner) 
                : mountPoint{dir}, configurationFile{confFile}, owner{tableOwner}, dbName{""}, 
-                 userName{""}, dbAddress{""}, dbPort{""}, dbPwd{""}, dbconn{DBIface::getInstance().getDbConn("postgresql", slog)}, thRefresh{nullptr} {
+                 userName{""}, dbAddress{""}, dbPort{""}, dbPwd{""}, dbconn{DBIface::getInstance().getDbConn("postgresql", slog)} {
 
          syslog           = slog;
 
